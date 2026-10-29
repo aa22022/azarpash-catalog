@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>کاتالوگ مخزن زباله زیرزمینی - شرکت آذرپاش پیشرو</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --gold:#d4a853;
+  --gold-l:#f0d78c;
+  --dark:#08080f;
+  --glass:rgba(12,12,20,.82);
+  --glass-b:rgba(255,255,255,.07);
+}
+html,body{
+  width:100%;height:100dvh;overflow:hidden;
+  font-family:'Vazirmatn',Tahoma,sans-serif;
+  background:var(--dark);color:#fff;
+  user-select:none;-webkit-user-select:none;
+}
+
+/* ================= لودینگ ================= */
+#loader{
+  position:fixed;inset:0;z-index:9999;background:var(--dark);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .7s ease;
+}
+#loader.hide{opacity:0;pointer-events:none}
+.ld-ring{
+  width:56px;height:56px;border:3px solid rgba(255,255,255,.06);
+  border-top-color:var(--gold);border-radius:50%;
+  animation:spin .9s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loader p{margin-top:16px;font-size:12px;color:rgba(255,255,255,.3);font-weight:300}
+
+/* ================= هدر ================= */
+.hd{
+  position:fixed;top:0;left:0;right:0;
+  background:var(--glass);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--glass-b);
+  z-index:100;padding:9px 12px 7px;
+}
+.hd-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.hd-title{
+  flex:1;text-align:center;line-height:1.45;
+  font-size:13px;font-weight:700;
+  background:linear-gradient(90deg,var(--gold),var(--gold-l),#fff,var(--gold-l),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-size:200% auto;animation:shimmer 5s linear infinite;
+}
+.hd-title b{display:block;font-size:.85em;font-weight:600;opacity:.9}
+@keyframes shimmer{to{background-position:200% center}}
+.hd-sub{
+  text-align:center;font-size:10px;margin-top:3px;
+  color:rgba(255,255,255,.3);font-weight:300;
+}
+.hb{
+  width:33px;height:33px;border:none;flex-shrink:0;
+  background:rgba(255,255,255,.05);border:1px solid var(--glass-b);
+  color:rgba(255,255,255,.6);border-radius:9px;cursor:pointer;
+  font-size:14px;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.hb:active{transform:scale(.88);background:var(--gold);color:var(--dark)}
+
+/* ================= صحنه کتاب ================= */
+.stage{
+  position:fixed;left:0;right:0;top:78px;bottom:60px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;padding:8px;
+  direction:ltr;
+  background:
+    radial-gradient(ellipse at 50% 115%,rgba(212,168,83,.045) 0%,transparent 55%),
+    radial-gradient(ellipse at 50% 45%,#0e0e1a 0%,var(--dark) 100%);
+}
+#book{margin:0 auto;direction:ltr}
+#book .stf__parent{
+  box-shadow:0 12px 55px rgba(0,0,0,.72),0 2px 12px rgba(0,0,0,.45)!important;
+  border-radius:4px;margin:0 auto!important;
+}
+.page{background:#fff;overflow:hidden}
+.page img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none}
+.page.cover-page{background:linear-gradient(135deg,#1a1a2e,#0a0a15)}
+.page.cover-page img{object-fit:cover}
+
+/* ================= فوتر ================= */
+.ft{
+  position:fixed;bottom:0;left:0;right:0;height:60px;
+  background:var(--glass);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1px solid var(--glass-b);
+  display:flex;flex-direction:column;z-index:100;
+}
+.ft-ctl{flex:1;display:flex;align-items:center;padding:0 10px;gap:8px}
+.ft-cr{
+  text-align:center;font-size:9px;letter-spacing:.2px;
+  color:rgba(255,255,255,.26);font-weight:300;
+  padding:3px 0 5px;border-top:1px solid rgba(255,255,255,.035);
+}
+.ft-cr span{color:var(--gold);font-weight:500}
+.nb{
+  width:38px;height:38px;border:none;flex-shrink:0;
+  background:rgba(255,255,255,.05);border:1px solid var(--glass-b);
+  color:rgba(255,255,255,.72);border-radius:10px;cursor:pointer;
+  font-size:16px;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.nb:active{transform:scale(.88);background:var(--gold);color:var(--dark)}
+.nb:disabled{opacity:.15;pointer-events:none}
+.sb{flex:1;display:flex;align-items:center;gap:8px}
+.sb input{
+  flex:1;-webkit-appearance:none;appearance:none;height:3px;
+  background:rgba(255,255,255,.09);border-radius:2px;outline:none;
+  direction:rtl;
+}
+.sb input::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  border-radius:50%;cursor:pointer;box-shadow:0 1px 7px rgba(212,168,83,.45);
+}
+.sb input::-moz-range-thumb{
+  width:16px;height:16px;border:none;
+  background:var(--gold);border-radius:50%;cursor:pointer;
+}
+.sb-lbl{
+  font-size:10px;color:rgba(255,255,255,.26);
+  min-width:46px;text-align:center;font-weight:300;
+}
+
+/* ================= بندانگشتی ================= */
+.th{
+  position:fixed;inset:0;z-index:200;display:none;flex-direction:column;
+  background:rgba(4,4,10,.97);backdrop-filter:blur(8px);
+}
+.th.open{display:flex}
+.th-h{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid var(--glass-b);
+}
+.th-h h3{font-size:14px;font-weight:600;color:var(--gold-l)}
+.th-g{
+  flex:1;overflow-y:auto;display:grid;
+  grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;
+}
+.ti{
+  border-radius:6px;overflow:hidden;cursor:pointer;position:relative;
+  border:2px solid transparent;transition:all .2s;
+}
+.ti.act{border-color:var(--gold);box-shadow:0 0 16px rgba(212,168,83,.18)}
+.ti img{width:100%;aspect-ratio:7/10;object-fit:cover;display:block}
+.ti span{
+  position:absolute;bottom:0;left:0;right:0;text-align:center;
+  font-size:10px;padding:3px;color:#fff;
+  background:linear-gradient(transparent,rgba(0,0,0,.75));
+}
+
+/* ================= راهنما ================= */
+.hint{
+  position:fixed;bottom:76px;left:50%;transform:translateX(-50%);
+  background:var(--glass);backdrop-filter:blur(10px);
+  border:1px solid var(--glass-b);white-space:nowrap;
+  color:rgba(255,255,255,.52);padding:8px 20px;
+  border-radius:24px;font-size:11px;z-index:150;font-weight:300;
+  animation:hOut 7s forwards;pointer-events:none;
+}
+@keyframes hOut{0%,72%{opacity:1}100%{opacity:0}}
+
+/* ================= ریسپانسیو ================= */
+@media(min-width:769px){
+  .hd{padding:12px 20px 9px}
+  .hd-title{font-size:17px}
+  .hd-sub{font-size:11px;margin-top:5px}
+  .stage{top:88px}
+  .ft-cr{font-size:10px}
+  .th-g{grid-template-columns:repeat(6,1fr)}
+}
+@media(max-width:400px){
+  .hd{padding:7px 8px 5px}
+  .hd-title{font-size:11px}
+  .hd-sub{font-size:9px}
+  .hb{width:29px;height:29px;font-size:12px}
+  .stage{top:70px}
+}
+</style>
+</head>
+<body>
+
+<!-- ========== لودینگ ========== -->
+<div id="loader">
+  <div class="ld-ring"></div>
+  <p>در حال بارگذاری کاتالوگ</p>
+</div>
+
+<!-- ========== هدر ========== -->
+<div class="hd">
+  <div class="hd-top">
+    <button class="hb" onclick="openTh()" title="همه صفحات">☷</button>
+    <div class="hd-title">
+      کاتالوگ مخزن زباله زیرزمینی
+      <b>شرکت آذرپاش پیشرو</b>
+    </div>
+    <button class="hb" onclick="shareIt()" title="اشتراک‌گذاری">⤴</button>
+  </div>
+  <div class="hd-sub">صفحه <span id="pn">۱</span> از <span id="pt">۱۰</span></div>
+</div>
+
+<!-- ========== کتاب ========== -->
+<div class="stage" id="stage">
+  <!-- ⚠️ صفحات برعکس چیده شده‌اند تا راست‌به‌چپ شود -->
+  <div id="book">
+    <div class="page cover-page"><img src="images/page-10.jpg" alt=""></div>
+    <div class="page"><img src="images/page-09.jpg" alt=""></div>
+    <div class="page"><img src="images/page-08.jpg" alt=""></div>
+    <div class="page"><img src="images/page-07.jpg" alt=""></div>
+    <div class="page"><img src="images/page-06.jpg" alt=""></div>
+    <div class="page"><img src="images/page-05.jpg" alt=""></div>
+    <div class="page"><img src="images/page-04.jpg" alt=""></div>
+    <div class="page"><img src="images/page-03.jpg" alt=""></div>
+    <div class="page"><img src="images/page-02.jpg" alt=""></div>
+    <div class="page cover-page"><img src="images/page-01.jpg" alt=""></div>
+  </div>
+</div>
+
+<!-- ========== فوتر ========== -->
+<div class="ft">
+  <div class="ft-ctl">
+    <button class="nb" id="bNext" onclick="goNext()" title="صفحه بعد">❮</button>
+    <div class="sb">
+      <span class="sb-lbl" id="sLbl">۱ / ۱۰</span>
+      <input type="range" id="sl" min="1" max="10" value="1" oninput="goSl(this.value)">
+    </div>
+    <button class="nb" id="bPrev" onclick="goPrev()" title="صفحه قبل">❯</button>
+  </div>
+  <div class="ft-cr">طراحی شده توسط واحد <span>IT</span> شرکت آذرپاش پیشرو</div>
+</div>
+
+<!-- ========== بندانگشتی ========== -->
+<div class="th" id="th">
+  <div class="th-h">
+    <h3>صفحات کاتالوگ</h3>
+    <button class="hb" onclick="closeTh()">✕</button>
+  </div>
+  <div class="th-g" id="thg"></div>
+</div>
+
+<!-- ========== راهنما ========== -->
+<div class="hint">📖 گوشه سمت چپ صفحه را بگیرید و بکشید</div>
+
+<script>
+/* ==========================================================
+   📘 تنظیمات کاتالوگ
+   ========================================================== */
+const THUMBS = [
+  "images/page-01.jpg","images/page-02.jpg","images/page-03.jpg",
+  "images/page-04.jpg","images/page-05.jpg","images/page-06.jpg",
+  "images/page-07.jpg","images/page-08.jpg","images/page-09.jpg",
+  "images/page-10.jpg"
+];
+const N = THUMBS.length;
+
+/* ==========================================================
+   ⚙️ موتور (راست‌به‌چپ)
+   صفحات در HTML برعکس چیده شده‌اند:
+   bookIndex 0 = page-10  ...  bookIndex 9 = page-01
+   شماره واقعی = N - bookIndex
+   ========================================================== */
+const toFa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const realNum  = idx => N - idx;      // index کتاب → شماره واقعی
+const bookIdx  = num => N - num;      // شماره واقعی → index کتاب
+
+let pageFlip = null;
+let curIdx   = N - 1;                 // شروع از جلد (page-01)
+
+const isMobile = () => window.innerWidth < 769;
+
+function initBook(){
+  const stage = document.getElementById('stage');
+  const sw = stage.clientWidth  - 16;
+  const sh = stage.clientHeight - 16;
+  const mob = isMobile();
+  const r = 0.707;                    // نسبت A4
+
+  let w, h;
+  if (mob) {
+    h = sh;  w = h * r;
+    if (w > sw * 0.96) { w = sw * 0.96; h = w / r; }
+  } else {
+    h = sh;  w = h * r;
+    if (w * 2 > sw * 0.96) { w = sw * 0.48; h = w / r; }
+  }
+
+  if (pageFlip) { try { pageFlip.destroy(); } catch(e){} }
+
+  pageFlip = new St.PageFlip(document.getElementById('book'), {
+    width:  Math.floor(w),
+    height: Math.floor(h),
+    size: "fixed",
+    minWidth: 180, maxWidth: 1400,
+    minHeight: 260, maxHeight: 1900,
+    showCover: true,
+    maxShadowOpacity: 0.55,
+    mobileScrollSupport: false,
+    clickEventForward: true,
+    useMouseEvents: true,
+    swipeDistance: 20,
+    showPageCorners: true,
+    flippingTime: 800,
+    usePortrait: mob,
+    autoSize: false,
+    drawShadow: true,
+    disableFlipByClick: false,
+    startZIndex: 0
+  });
+
+  pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+  pageFlip.turnToPage(curIdx);        // بدون انیمیشن برو روی جلد
+
+  pageFlip.on('flip', e => { curIdx = e.data; ui(); });
+
+  ui();
+}
+
+/* ---------- ناوبری (معکوس چون صفحات برعکس‌اند) ---------- */
+function goNext(){ if(pageFlip) pageFlip.flipPrev(); }   // ← صفحه بعد
+function goPrev(){ if(pageFlip) pageFlip.flipNext(); }   // → صفحه قبل
+
+function goSl(v){
+  const t = bookIdx(parseInt(v));
+  if (pageFlip && t !== curIdx) pageFlip.turnToPage(t);
+  curIdx = t; ui();
+}
+function goPage(num){
+  if (pageFlip) pageFlip.turnToPage(bookIdx(num));
+  curIdx = bookIdx(num); ui(); closeTh();
+}
+
+/* ---------- بروزرسانی رابط ---------- */
+function ui(){
+  const n = realNum(curIdx);
+  document.getElementById('pn').textContent   = toFa(n);
+  document.getElementById('pt').textContent   = toFa(N);
+  document.getElementById('sl').value         = n;
+  document.getElementById('sLbl').textContent = toFa(n) + ' / ' + toFa(N);
+  document.getElementById('bPrev').disabled   = (n === 1);
+  document.getElementById('bNext').disabled   = (n === N);
+  document.querySelectorAll('.ti').forEach((t,i) =>
+    t.classList.toggle('act', (i+1) === n)
+  );
+}
+
+/* ---------- بندانگشتی ---------- */
+function buildTh(){
+  const g = document.getElementById('thg');
+  g.innerHTML = '';
+  THUMBS.forEach((src,i) => {
+    const num = i + 1;
+    const t = document.createElement('div');
+    t.className = 'ti' + (num === 1 ? ' act' : '');
+    t.innerHTML = `<img src="${src}" loading="lazy" alt=""><span>${toFa(num)}</span>`;
+    t.onclick = () => goPage(num);
+    g.appendChild(t);
+  });
+}
+function openTh(){ document.getElementById('th').classList.add('open'); }
+function closeTh(){ document.getElementById('th').classList.remove('open'); }
+
+/* ---------- اشتراک‌گذاری ---------- */
+function shareIt(){
+  const data = {
+    title: 'کاتالوگ مخزن زباله زیرزمینی - شرکت آذرپاش پیشرو',
+    text : 'کاتالوگ محصولات شرکت آذرپاش پیشرو را ببینید',
+    url  : location.href
+  };
+  if (navigator.share) navigator.share(data).catch(()=>{});
+  else navigator.clipboard.writeText(location.href).then(()=>alert('لینک کپی شد!'));
+}
+
+/* ---------- کیبورد ---------- */
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft')  goNext();
+  if (e.key === 'ArrowRight') goPrev();
+  if (e.key === 'Escape')     closeTh();
+});
+
+/* ---------- ریسایز ---------- */
+let rt;
+window.addEventListener('resize', () => {
+  clearTimeout(rt);
+  rt = setTimeout(initBook, 350);
+});
+window.addEventListener('orientationchange', () => {
+  clearTimeout(rt);
+  rt = setTimeout(initBook, 500);
+});
+
+/* ---------- راه‌اندازی ---------- */
+document.getElementById('sl').max = N;
+document.getElementById('pt').textContent = toFa(N);
+buildTh();
+
+(function waitLib(){
+  if (typeof St !== 'undefined' && St.PageFlip) {
+    initBook();
+    let c = 0;
+    THUMBS.slice(0,3).forEach(s => {
+      const im = new Image();
+      im.onload = im.onerror = () => {
+        if (++c >= 2) setTimeout(() =>
+          document.getElementById('loader').classList.add('hide'), 300);
+      };
+      im.src = s;
+    });
+  } else setTimeout(waitLib, 80);
+})();
+setTimeout(() => document.getElementById('loader').classList.add('hide'), 5000);
+</script>
+</body>
+</html>
